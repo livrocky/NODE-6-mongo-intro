@@ -1,11 +1,10 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const usersRoutes = require('./api/users');
+const { PORT } = require('./config');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 // MiddleWare
 app.use(cors());
