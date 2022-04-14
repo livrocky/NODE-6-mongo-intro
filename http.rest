@@ -1,5 +1,15 @@
 ###
-GET http://localhost:3000/users
+GET http://localhost:3000/api/users
 
 ###
-POST http://localhost:3000/users
+POST http://localhost:3000/api/users
+
+###
+
+GET http://localhost:3000/api/students
+
+###
+GET http://localhost:3000/api/males
+
+###
+GET http://localhost:3000/api/females

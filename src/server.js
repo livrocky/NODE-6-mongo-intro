@@ -11,7 +11,7 @@ app.use(cors());
 app.use(morgan('dev'));
 
 // Routes
-app.use('/', usersRoutes);
+app.use('/api/', usersRoutes);
 
 // 404
 app.use((req, res) => {
