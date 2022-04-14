@@ -21,7 +21,6 @@ async function findMalesDb() {
     await dbClient.close();
   }
 }
-
 async function findFemalesDb() {
   console.log('findFemalesDb ran');
   try {
@@ -33,13 +32,15 @@ async function findFemalesDb() {
     const studArr = await resourse.find(query).toArray();
     return studArr;
   } catch (error) {
-    console.log('findMalesDb === error', error);
+    console.log('findFemalesDb === error', error);
     return false;
   } finally {
     // atsijungti
     await dbClient.close();
   }
 }
+
+// async function getArrDb(query) {}
 
 module.exports = {
   findMalesDb,

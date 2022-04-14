@@ -1,18 +1,17 @@
-###
 GET http://localhost:3000/api/users
 
-###
-POST http://localhost:3000/api/users
+####
+GET http://localhost:3000/api/users/students
+####
+GET http://localhost:3000/api/users/males
+####
+GET http://localhost:3000/api/users/name/Appy
 
-###
 
-GET http://localhost:3000/api/students
+####
+POST http://localhost:3000/users
+Content-Type: application/json
 
-###
-GET http://localhost:3000/api/males
-
-###
-GET http://localhost:3000/api/females
-
-###
-GET http://localhost:3000/api/users/name/James
+{
+  "name": "Bob"
+}
