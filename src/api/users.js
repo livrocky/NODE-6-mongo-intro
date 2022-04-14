@@ -1,5 +1,6 @@
 const express = require('express');
 const { dbClient } = require('../config');
+const { findMalesDb, findFemalesDb } = require('../model/usersModel');
 
 const usersRoutes = express.Router();
 const dbName = 'node7';
@@ -53,67 +54,73 @@ usersRoutes.post('/users', async (req, res) => {
 
 // GET /api/user/males - atrenkam tik males
 usersRoutes.get('/males', async (req, res) => {
-  try {
-    // prisijungsim prie mongoDb
-    await dbClient.connect();
-    console.log('open conn');
-    // atliksim veiksma (gauti duom, irasyti duom. atnaujinti)
-    const resourse = dbClient.db(dbName).collection(collName);
-    const usersArr = await resourse.find({ gender: 'male' }).toArray();
-    console.log('usersArr===', usersArr);
-    res.json(usersArr);
-  } catch (error) {
-    console.log(error.message);
+  console.log('usersRoutes.get /users/males ran');
+  const malesArr = await findMalesDb();
+
+  if (malesArr === false) {
     res.status(500).json('something went wrong');
-  } finally {
-    // uzdaryti prisijungima
-    await dbClient.close();
-    console.log('close conn');
+    return;
   }
-  //   res.json('GET /users route');
+
+  res.json(malesArr);
 });
 // GET /api/user/students - atrenkam tik students
-usersRoutes.get('/students', async (req, res) => {
+// eslint-disable-next-line no-use-before-define
+usersRoutes.get('/students', studentsController);
+async function studentsController(req, res) {
   try {
-    // prisijungsim prie mongoDb
+    // prisijungti
     await dbClient.connect();
-    console.log('open conn');
-    // atliksim veiksma (gauti duom, irasyti duom. atnaujinti)
+    // atlikti veiksmus
+    const query = { isStudent: true };
     const resourse = dbClient.db(dbName).collection(collName);
-    const usersArr = await resourse.find({ isStudent: true }).toArray();
-    console.log('usersArr===', usersArr);
-    res.json(usersArr);
+    const studArr = await resourse.find(query).toArray();
+    res.json(studArr);
   } catch (error) {
-    console.log(error.message);
+    console.log('studentsController === error', error);
     res.status(500).json('something went wrong');
   } finally {
-    // uzdaryti prisijungima
+    // atsijungti
     await dbClient.close();
-    console.log('close conn');
   }
-  //   res.json('GET /users route');
-});
-// GET /api/user/females - atrenkam tik moteris
+}
+// GET /api/females - atrenkam tik moteris
 usersRoutes.get('/females', async (req, res) => {
-  try {
-    // prisijungsim prie mongoDb
-    await dbClient.connect();
-    console.log('open conn');
-    // atliksim veiksma (gauti duom, irasyti duom. atnaujinti)
-    const resourse = dbClient.db(dbName).collection(collName);
-    const usersArr = await resourse.find({ gender: 'female' }).toArray();
-    console.log('usersArr===', usersArr);
-    res.json(usersArr);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json('something went wrong');
-  } finally {
-    // uzdaryti prisijungima
-    await dbClient.close();
-    console.log('close conn');
-  }
-  //   res.json('GET /users route');
-});
-// GET /api/user/age/gt/20 - ei 20 (20 dinaminis segmentas kuriam galim paduoti koki norim skaiciu)
+  console.log('usersRoutes.get /females ran');
+  const femalesArr = await findFemalesDb();
 
+  if (femalesArr === false) {
+    res.status(500).json('something went wrong');
+    return;
+  }
+
+  res.json(femalesArr);
+});
+// GET /api/user/name/James - atrenkam useri vardu James (james dynamic) PASIZIURETI KAD VEIKTU
+usersRoutes.get('/users/name/:name', async (req, res) => {
+  // const name = req.params.name;
+  const { name } = req.params;
+  res.json(`you want to get user with name ${name}`);
+});
 module.exports = usersRoutes;
+
+// usersRoutes.get('/males', async (req, res) => {
+//   try {
+//     // prisijungsim prie mongoDb
+//     await dbClient.connect();
+//     console.log('open conn');
+//     // atliksim veiksma (gauti duom, irasyti duom. atnaujinti)
+//     const resourse = dbClient.db(dbName).collection(collName);
+//     const usersArr = await resourse.find({ gender: 'male' }).toArray();
+//     console.log('usersArr===', usersArr);
+//     res.json(usersArr);
+//   } catch (error) {
+//     console.log(error.message);
+//     res.status(500).json('something went wrong');
+//   } finally {
+//     // uzdaryti prisijungima
+//     await dbClient.close();
+//     console.log('close conn');
+//   }
+//   //   res.json('GET /users route');
+// });

@@ -13,3 +13,6 @@ GET http://localhost:3000/api/males
 
 ###
 GET http://localhost:3000/api/females
+
+###
+GET http://localhost:3000/api/users/:name
