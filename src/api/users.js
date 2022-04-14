@@ -97,8 +97,7 @@ usersRoutes.get('/females', async (req, res) => {
   res.json(femalesArr);
 });
 // GET /api/user/name/James - atrenkam useri vardu James (james dynamic) PASIZIURETI KAD VEIKTU
-usersRoutes.get('/users/name/:name', async (req, res) => {
-  // const name = req.params.name;
+usersRoutes.get('/user/name/:name', async (req, res) => {
   const { name } = req.params;
   res.json(`you want to get user with name ${name}`);
 });
