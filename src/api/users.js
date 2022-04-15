@@ -1,7 +1,7 @@
 const express = require('express');
 const { dbClient } = require('../config');
 // const { malesIndex } = require('../controller/usersController');
-const { findMalesDb, findFemalesDb } = require('../model/usersModel');
+const { findMalesDb, findFemalesDb, findUserAge } = require('../model/usersModel');
 
 const usersRoutes = express.Router();
 const dbName = 'node7';
@@ -84,7 +84,7 @@ usersRoutes.get('/users/males', async (req, res) => {
   }
   res.json(malesArr);
 });
-
+// GET /api/user/females - atrenkam tik moteris
 usersRoutes.get('/users/females', async (req, res) => {
   console.log('usersRoutes.get /users/females ran');
   const femalesArr = await findFemalesDb();
@@ -96,7 +96,6 @@ usersRoutes.get('/users/females', async (req, res) => {
   res.json(femalesArr);
 });
 
-// GET /api/user/females - atrenkam tik moteris
 // findUserByName('James');
 // GET /api/user/name/James - atrenkam useri vardu James (james dynamic)
 usersRoutes.get('/users/name/:name', async (req, res) => {
@@ -108,6 +107,16 @@ usersRoutes.get('/users/name/:name', async (req, res) => {
 
 // GET /api/user/age/gt/20 - atrenkam zmones vyresnius nei 20
 // (20 dinaminis segmentas kuriam galim paduoti koki norim skaiciu)
+
+usersRoutes.get('/user/age/gt/:age', async (req, res) => {
+  const { age } = req.params;
+  const usersArr = await findUserAge(age);
+  if (usersArr === false) {
+    res.status(500).json('no good');
+    return;
+  }
+  res.json(usersArr);
+});
 
 // extra// GET /api/user/names/James,Jane,Abby -
 // gaunam visus zmones kuriu vardai yra surasyti per kableli po names/
